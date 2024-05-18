@@ -1,9 +1,12 @@
-import React, { useState } from 'react'
-import { APIProvider, Map, Marker } from '@vis.gl/react-google-maps'
+import React, { useState, useRef } from 'react'
+import { APIProvider, Map, Marker, AdvancedMarker } from '@vis.gl/react-google-maps'
 import Versions from './components/Versions'
 import electronLogo from './assets/logo.png'
+import data from './assets/data.json'
+import UserMarker from './components/UserMarker'
 
 function App() {
+  console.log(data)
   const [shouldShowLoader, setShouldShowLoader] = useState(true)
   const [isApiLoaded, setIsApiLoaded] = useState(false)
 
@@ -15,6 +18,12 @@ function App() {
     }, 5000)
   }
 
+  const userDataMock = {
+    lat: 53.7128,
+    lng: 14.006,
+    direction: 90
+  }
+
   return (
     <>
       <APIProvider apiKey={'AIzaSyC6683MhH9u4L1iAdQX6JM-axhi6yB6X3k'} onLoad={apiLoadEvent}>
@@ -24,7 +33,17 @@ function App() {
           defaultZoom={5}
           gestureHandling={'greedy'}
           disableDefaultUI={true}
+          mapTypeId="terrain"
+          mapId={'c3a8b31d60f8d993'}
         >
+          <UserMarker
+            lat={userDataMock.lat}
+            lng={userDataMock.lng}
+            direction={userDataMock.direction}
+          />
+          {data.map((item) => {
+            return <Marker key={item.id} position={{ lat: item.lat, lng: item.lng }} />
+          })}
           <Marker position={{ lat: 53.54992, lng: 10.00678 }} />
         </Map>
       </APIProvider>
