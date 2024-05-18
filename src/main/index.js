@@ -1,6 +1,7 @@
 import { app, shell, BrowserWindow, ipcMain } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
+import mysql from 'mysql2'
 import icon from '../../resources/icon.png?asset'
 
 function createWindow() {
@@ -70,5 +71,22 @@ app.on('window-all-closed', () => {
   }
 })
 
-// In this file you can include the rest of your app"s specific main process
-// code. You can also put them in separate files and require them here.
+// Handle database connection
+ipcMain.handle('db-query', async (event, query) => {
+  const connection = mysql.createConnection({
+    host: '192.168.1.105',
+    user: 'root',
+    password: 'aviatech',
+    database: 'mysql'
+  })
+
+  return new Promise((resolve, reject) => {
+    connection.query(query, (error, results) => {
+      if (error) {
+        reject(error)
+      } else {
+        resolve(results)
+      }
+    })
+  })
+})
