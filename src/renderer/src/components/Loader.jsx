@@ -1,5 +1,5 @@
 import React from 'react'
-import electronLogo from '../assets/logo.png'
+import logo from '../assets/logo.png'
 import Versions from './Versions'
 
 const Loader = ({ isApiLoaded }) => {
@@ -12,7 +12,7 @@ const Loader = ({ isApiLoaded }) => {
         transitionDelay: '3.5s'
       }}
     >
-      <img src={electronLogo} alt="Drakkar" style={{ maxWidth: '100vw', maxHeight: '100vh' }} />
+      <img src={logo} alt="Drakkar" style={{ maxWidth: '100vw', maxHeight: '100vh' }} />
       <Versions />
     </div>
   )

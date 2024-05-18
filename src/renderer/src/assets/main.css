@@ -178,3 +178,27 @@ code {
 .modal-content {
   color: #000;
 }
+
+.map-navigation {
+  position: fixed;
+  top: calc(90vh - 120px);
+  right: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.map-navigation button {
+  font-size: 24px;
+  width: 78px;
+  height: 78px;
+  font-weight: 600;
+  border: none;
+  background: #fff;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
