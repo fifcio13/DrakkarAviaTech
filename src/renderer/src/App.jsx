@@ -5,30 +5,19 @@ import electronLogo from './assets/logo.png'
 
 function App() {
   const [shouldShowLoader, setShouldShowLoader] = useState(true)
-  const applyGlobalStyle = () => {
+  const [isApiLoaded, setIsApiLoaded] = useState(false)
+
+  const apiLoadEvent = () => {
+    console.log('API LOADED')
+    setIsApiLoaded(true)
     setTimeout(() => {
-      const style = document.createElement('style')
-      style.innerHTML = `
-        .loader {
-          display: none;
-        }
-        #root {
-          display: block !important;
-        }
-      `
-      document.head.appendChild(style)
-    }, 4500)
+      setShouldShowLoader(false)
+    }, 5000)
   }
 
   return (
     <>
-      {shouldShowLoader && (
-        <div className="loader fadeOut">
-          <img src={electronLogo} alt="Drakkar" style={{ maxWidth: '100vw', maxHeight: '100vh' }} />
-          <Versions />
-        </div>
-      )}
-      <APIProvider apiKey={'AIzaSyC6683MhH9u4L1iAdQX6JM-axhi6yB6X3k'} onLoad={applyGlobalStyle}>
+      <APIProvider apiKey={'AIzaSyC6683MhH9u4L1iAdQX6JM-axhi6yB6X3k'} onLoad={apiLoadEvent}>
         <Map
           style={{ width: '100vw', height: '100vh' }}
           defaultCenter={{ lat: 22.54992, lng: 0 }}
@@ -39,6 +28,19 @@ function App() {
           <Marker position={{ lat: 53.54992, lng: 10.00678 }} />
         </Map>
       </APIProvider>
+      {shouldShowLoader && (
+        <div
+          className="loader"
+          style={{
+            opacity: isApiLoaded ? 0 : 1,
+            transition: 'opacity 1.5s',
+            transitionDelay: '3.5s'
+          }}
+        >
+          <img src={electronLogo} alt="Drakkar" style={{ maxWidth: '100vw', maxHeight: '100vh' }} />
+          <Versions />
+        </div>
+      )}
     </>
   )
 }
