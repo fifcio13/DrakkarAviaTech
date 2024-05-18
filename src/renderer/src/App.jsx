@@ -37,8 +37,8 @@ function App() {
   }, [refresh])
 
   const userDataMock = {
-    lat: 53.7128,
-    lng: 14.006,
+    lat: 50.2990944,
+    lng: 21.4808552,
     direction: 0
   }
 
@@ -62,7 +62,6 @@ function App() {
           {flightData.map((item) => {
             return <ThermalMarker key={item.id} lat={item.lat} lng={item.lng} />
           })}
-          <Marker position={{ lat: 53.54992, lng: 10.00678 }} />
         </Map>
       </APIProvider>
       {shouldShowLoader && <Loader isApiLoaded={isApiLoaded} />}
