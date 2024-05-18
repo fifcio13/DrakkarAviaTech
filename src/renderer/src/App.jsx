@@ -1,14 +1,15 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { APIProvider, Map, Marker, AdvancedMarker } from '@vis.gl/react-google-maps'
-import Versions from './components/Versions'
-import electronLogo from './assets/logo.png'
-import data from './assets/data.json'
+import jsonFlightData from './assets/data.json'
 import UserMarker from './components/UserMarker'
+import ThermalMarker from './components/ThermalMarker'
+import Loader from './components/Loader'
 
 function App() {
-  console.log(data)
   const [shouldShowLoader, setShouldShowLoader] = useState(true)
   const [isApiLoaded, setIsApiLoaded] = useState(false)
+  const [flightData, setFlightData] = useState(jsonFlightData)
+  const [refresh, setRefresh] = useState(0)
 
   const apiLoadEvent = () => {
     console.log('API LOADED')
@@ -18,10 +19,27 @@ function App() {
     }, 5000)
   }
 
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setRefresh((prev) => prev + 1)
+    }, 10000)
+
+    return () => clearInterval(intervalId)
+  }, [])
+
+  useEffect(() => {
+    const loadFlightData = async () => {
+      const { default: newFlightData } = await import('./assets/data.json')
+      setFlightData(newFlightData)
+    }
+
+    loadFlightData()
+  }, [refresh])
+
   const userDataMock = {
     lat: 53.7128,
     lng: 14.006,
-    direction: 90
+    direction: 0
   }
 
   return (
@@ -41,25 +59,13 @@ function App() {
             lng={userDataMock.lng}
             direction={userDataMock.direction}
           />
-          {data.map((item) => {
-            return <Marker key={item.id} position={{ lat: item.lat, lng: item.lng }} />
+          {flightData.map((item) => {
+            return <ThermalMarker key={item.id} lat={item.lat} lng={item.lng} />
           })}
           <Marker position={{ lat: 53.54992, lng: 10.00678 }} />
         </Map>
       </APIProvider>
-      {shouldShowLoader && (
-        <div
-          className="loader"
-          style={{
-            opacity: isApiLoaded ? 0 : 1,
-            transition: 'opacity 1.5s',
-            transitionDelay: '3.5s'
-          }}
-        >
-          <img src={electronLogo} alt="Drakkar" style={{ maxWidth: '100vw', maxHeight: '100vh' }} />
-          <Versions />
-        </div>
-      )}
+      {shouldShowLoader && <Loader isApiLoaded={isApiLoaded} />}
     </>
   )
 }

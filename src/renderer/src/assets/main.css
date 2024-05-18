@@ -174,3 +174,7 @@ code {
   left: 0;
   background-color: #fff;
 }
+
+.modal-content {
+  color: #000;
+}
