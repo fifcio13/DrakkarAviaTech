@@ -30,16 +30,16 @@ const ThermalMarker = ({ lat, lng, date }) => {
   }, [containerRef])
 
   // Const fresh is a number between 0 and 2 that determines the color of the marker and is based on the date of the thermal data
-  // if the date is less than 0,5 hours old, if between 0,5 and 1,5 hours old or if older than 1,5 hours
+  // if the date is less than 0,5 hours old, if between 0,5 and 1,5 hours old or if older than 1,5 hours but maximum 5 hours
   const dateNow = new Date()
   const dateThermal = new Date(date)
   const diff = dateNow - dateThermal
-  let fresh = 0
+  let fresh = null
   if (diff < 1800000) {
     fresh = 0
   } else if (diff < 5400000) {
     fresh = 1
-  } else {
+  } else if (diff < 18000000) {
     fresh = 2
   }
 
@@ -50,8 +50,12 @@ const ThermalMarker = ({ lat, lng, date }) => {
   }
   const markerColor = markerColors[fresh]
 
+  if (!fresh) {
+    return null
+  }
+
   return (
-    <div ref={containerRef}>
+    <div ref={containerRef} onClick={handleMarkerClick}>
       <AdvancedMarker
         ref={markerRef}
         position={{ lat: lat, lng: lng }}
