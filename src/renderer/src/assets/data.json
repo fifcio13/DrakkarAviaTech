@@ -1,12 +1,12 @@
 {
-  "time": "21:37",
-  "latitude": 50.2879,
+  "time": "123519",
+  "latitude": 50.2884,
   "lat_dir": " ",
-  "longitude": 21.4255,
+  "longitude": 21.4355,
   "lon_dir": " ",
-  "date": "2024-19-05T11:20:05.123",
+  "date": "230394",
   "speed": 0.0,
   "course": 0,
   "height": 140.0,
-  "thermal_state": 0
+  "thermal_state": 1
 }

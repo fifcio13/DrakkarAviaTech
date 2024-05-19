@@ -7,6 +7,18 @@ import Loader from './components/Loader'
 
 const jsonFlightData = []
 
+function ParseDataToDateTimestamp(date, time) {
+  // I will get time = 200512; date = 190524 and I want it to be 2024-19-05T11:20:05.12
+  const year = date.slice(0, 2)
+  const month = date.slice(2, 4)
+  const day = date.slice(4, 6)
+  const hour = time.slice(0, 2)
+  const minute = time.slice(2, 4)
+  const second = time.slice(4, 6)
+  const millisecond = time.slice(6, 8)
+  return `20${year}-${month}-${day}T${hour}:${minute}:${second}.${millisecond}`
+}
+
 function App() {
   const [userData, setUserData] = useState(userDataJson)
   const [shouldShowLoader, setShouldShowLoader] = useState(true)
@@ -69,9 +81,11 @@ function App() {
 
       if (selectResult.length > 0) return null
 
+      const dateParsed = ParseDataToDateTimestamp(userData.date, userData.time)
+
       const insertQuery = `
         INSERT INTO LocationData (height, latitude, longitude, course, date, lat_dir, lon_dir) 
-        VALUES (${userData.height}, ${userData.latitude}, ${userData.longitude}, ${userData.course}, "${userData.date}", "${userData.lat_dir}", "${userData.lon_dir}")
+        VALUES (${userData.height}, ${userData.latitude}, ${userData.longitude}, ${userData.course}, "${dateParsed}", "${userData.lat_dir}", "${userData.lon_dir}")
       `
 
       // Execute the query using window.api.dbQuery without any parameters
