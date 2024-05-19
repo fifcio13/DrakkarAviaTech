@@ -73,21 +73,21 @@ app.on('window-all-closed', () => {
 })
 
 // Handle database connection
-// ipcMain.handle('db-query', async (event, query) => {
-//   const connection = mysql.createConnection({
-//     host: '192.168.1.105',
-//     user: 'root',
-//     password: 'aviatech',
-//     database: 'mysql'
-//   })
+ipcMain.handle('db-query', async (event, query) => {
+  const connection = mysql.createConnection({
+    host: '192.168.1.105',
+    user: 'root',
+    password: 'aviatech',
+    database: 'flightData'
+  })
 
-//   return new Promise((resolve, reject) => {
-//     connection.query(query, (error, results) => {
-//       if (error) {
-//         reject(error)
-//       } else {
-//         resolve(results)
-//       }
-//     })
-//   })
-// })
+  return new Promise((resolve, reject) => {
+    connection.query(query, (error, results) => {
+      if (error) {
+        reject(error)
+      } else {
+        resolve(results)
+      }
+    })
+  })
+})

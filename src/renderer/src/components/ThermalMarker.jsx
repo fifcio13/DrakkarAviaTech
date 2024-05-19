@@ -5,7 +5,7 @@ import { Pin, InfoWindow, useAdvancedMarkerRef, AdvancedMarker } from '@vis.gl/r
 // lat: number
 // lng: number
 
-const ThermalMarker = ({ lat, lng, date }) => {
+const ThermalMarker = ({ lat, lng, date, time, height, thermal_state }) => {
   const [markerRef, marker] = useAdvancedMarkerRef()
   const [infoWindowShown, setInfoWindowShown] = useState(false)
   const containerRef = useRef(null)
@@ -50,24 +50,33 @@ const ThermalMarker = ({ lat, lng, date }) => {
   }
   const markerColor = markerColors[fresh]
 
-  if (!fresh) {
-    return null
-  }
+  // if (!fresh) {
+  //   return null
+  // }
+
+  const [datePart, timePart] = date.split('T')
 
   return (
     <div ref={containerRef} onClick={handleMarkerClick}>
-      <AdvancedMarker
-        ref={markerRef}
-        position={{ lat: lat, lng: lng }}
-        onClick={handleMarkerClick}
-        style={{ opacity: 0 }}
-      >
-        <Pin background={markerColor} borderColor={markerColor} style={{ opacity: 0.5 }} />
+      <AdvancedMarker ref={markerRef} position={{ lat: lat, lng: lng }} onClick={handleMarkerClick}>
+        <Pin
+          background={markerColor}
+          borderColor={markerColor}
+          style={{ opacity: 0.5, rotate: `90deg` }}
+        />
       </AdvancedMarker>
       {infoWindowShown && (
         <InfoWindow anchor={marker} onClose={handleClose}>
           <div className="modal-content">
-            <p>Some arbitrary html to be rendered into the InfoWindow.</p>
+            <p>
+              Height: <b>{height}m</b>
+            </p>
+            <p>
+              Avg. Vertical speed: <b>2m/s</b>
+            </p>
+            <p>
+              {datePart} <b>{timePart}</b>
+            </p>
           </div>
         </InfoWindow>
       )}

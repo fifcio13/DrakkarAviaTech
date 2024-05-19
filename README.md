@@ -29,6 +29,7 @@ Znaczniki odświeżają się, jeśli użytkownik zgłosi, że komin termiczny na
 ## Plany Rozwoju
 
 Docelowo aplikacja nie będzie miała ograniczeń sprzętowych ze względu na wybór innego sprzętu, co pozwoli na dalszą rozbudowę i ulepszanie obecnych funkcji. Przede wszystkim w planach jest:
+System predykcyjno ekspertowy - czyli nakładka dzięki której użytkownik ma możliwość zobaczenia predykcji co do warunków w powietrzu.
 Usprawnienie obrotu mapy.
 Większą kontrolę nad znacznikami.
 Możliwość wyłączania niektórych informacji na mapach: np. wyświetlania znaczników sklepów, parków.
