@@ -1,5 +1,5 @@
-import React, { useState, useRef, useEffect } from 'react'
-import { APIProvider, Map, MapControl, ControlPosition } from '@vis.gl/react-google-maps'
+import React, { useState, useEffect } from 'react'
+import { APIProvider, Map } from '@vis.gl/react-google-maps'
 import jsonFlightData from './assets/dataMock.json'
 import UserMarker from './components/UserMarker'
 import ThermalMarker from './components/ThermalMarker'
@@ -23,8 +23,6 @@ function App() {
   })
   const [zoom, setZoom] = useState(14)
 
-  const mapRef = useRef(null)
-
   const apiLoadEvent = () => {
     setIsApiLoaded(true)
     setTimeout(() => {
@@ -41,14 +39,6 @@ function App() {
   }, [])
 
   useEffect(() => {
-    if (isApiLoaded && mapRef.current) {
-      const map = mapRef.current
-      map.setHeading(180) // Rotate the map to face south (180 degrees)
-      map.setTilt(45) // Set the tilt of the map (optional, for 3D effect)
-    }
-  }, [isApiLoaded])
-
-  useEffect(() => {
     const loadFlightData = async () => {
       const { default: newFlightData } = await import('./assets/dataMock.json')
       setFlightData(newFlightData)
@@ -58,16 +48,16 @@ function App() {
     loadFlightData()
   }, [refresh])
 
-  useEffect(() => {
-    window.api
-      .dbQuery('SELECT * FROM user')
-      .then((results) => {
-        console.log(results)
-      })
-      .catch((error) => {
-        console.error('Database query failed', error)
-      })
-  }, [])
+  // useEffect(() => {
+  //   window.api
+  //     .dbQuery('SELECT * FROM user')
+  //     .then((results) => {
+  //       console.log(results)
+  //     })
+  //     .catch((error) => {
+  //       console.error('Database query failed', error)
+  //     })
+  // }, [])
 
   // Dynamic mock data
   useEffect(() => {
@@ -83,7 +73,7 @@ function App() {
 
   return (
     <>
-      <APIProvider apiKey={'AIzaSyC6683MhH9u4L1iAdQX6JM-axhi6yB6X3k'} onLoad={apiLoadEvent}>
+      <APIProvider apiKey={process.env.VITE_GOOGLE_MAPS_API_KEY} onLoad={apiLoadEvent}>
         <Map
           style={{ width: '100vw', height: '100vw', rotate: '0deg' }}
           // Rotate whole map depending on userDirection (technical issue)
@@ -95,6 +85,7 @@ function App() {
           mapId={'c3a8b31d60f8d993'}
           center={center}
           zoom={zoom}
+          featureType="road"
         >
           <UserMarker
             lat={dynamicMockData.lat}
@@ -132,7 +123,6 @@ function App() {
               -
             </button>
           </div>
-          {/* </MapControl> */}
         </Map>
       </APIProvider>
       {shouldShowLoader && <Loader isApiLoaded={isApiLoaded} />}
